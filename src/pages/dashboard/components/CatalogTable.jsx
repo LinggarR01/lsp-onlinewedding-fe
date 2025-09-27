@@ -1,4 +1,4 @@
-function CatalogTable({ data, loading, error, onEditClick }) {
+function CatalogTable({ data, loading, error, onEditClick, onDeleteClick }) {
   if (loading) {
     return (
       // TAILWIND LOADING STATE
@@ -41,7 +41,7 @@ function CatalogTable({ data, loading, error, onEditClick }) {
   const tableData = Array.isArray(data) ? data : [data];
 
   return (
-    // TAILWIND TABLE STYLING
+    // Tabel
     <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
       {/* Table Container */}
       <div className="overflow-x-auto">
@@ -110,7 +110,9 @@ function CatalogTable({ data, loading, error, onEditClick }) {
                     className="text-black bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded-lg transition duration-200 mr-3">
                     Edit
                   </button>
-                  <button className="text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg transition duration-200">
+                  <button
+                    onClick={() => onDeleteClick(item.id_catalogue)}
+                    className="text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg transition duration-200">
                     Delete
                   </button>
                 </td>

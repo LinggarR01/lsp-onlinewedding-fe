@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import CatalogTable from './components/Table';
+import CatalogTable from './components/CatalogTable';
 import {
   FiPackage,
   FiDollarSign,
@@ -16,12 +16,13 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('catalog');
-  const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal
+  // State untuk modal kebuka atau ketutup gitu
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState(null); // Package yang akan diedit
+  // Ngedit package
+  const [selectedPackage, setSelectedPackage] = useState(null);
 
   // Tambahin Package
-
   const handleAddPackage = async (formData) => {
     try {
       console.log('Sending data to API...');
@@ -50,11 +51,30 @@ const Dashboard = () => {
       alert('Error: ' + err.message);
     }
   };
+  // Buat delete package
   const handleDeleteClick = async (packageId) => {
     try {
-    } catch (err) {}
+      const response = await fetch(
+        `http://localhost:3000/api/catalog/${packageId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+      if (response.ok) {
+        const updatedResponse = await fetch(
+          'http://localhost:3000/api/catalog'
+        );
+        console.log('Response status:', updatedResponse.status);
+        const updatedData = await updatedResponse.json();
+        setData(updatedData);
+        alert('Package deleted successfully!');
+      }
+    } catch (err) {
+      console.error('Error deleting package:', err);
+      alert('Error: ' + err.message);
+    }
   };
-  // Function untuk handle edit package
+  // Buat edit package
   const handleEditPackage = async (formData, packageId) => {
     try {
       const response = await fetch(
@@ -85,6 +105,7 @@ const Dashboard = () => {
     setIsEditModalOpen(true);
   };
 
+  // Fetch data dari API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -99,7 +120,7 @@ const Dashboard = () => {
     };
     fetchData();
   }, []);
-  // Calculate dashboard stats
+  // Ngitung statistik di dashboard
   const totalPackages = data.length;
   const totalOrders = 0;
   return (
@@ -159,6 +180,7 @@ const Dashboard = () => {
           </button>
         </nav>
       </div>
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Page Content */}
@@ -205,6 +227,7 @@ const Dashboard = () => {
               </div>
             </div>
           )}
+
           {/* Catalog Page */}
           {activeTab === 'catalog' && (
             <div>
@@ -243,6 +266,7 @@ const Dashboard = () => {
               />
             </div>
           )}
+
           {/* Orders Page */}
           {activeTab === 'orders' && (
             <div>
@@ -260,7 +284,7 @@ const Dashboard = () => {
               </div>
             </div>
           )}
-          {/* Orders Page */}
+          {/* Settings Page */}
           {activeTab === 'settings' && (
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
