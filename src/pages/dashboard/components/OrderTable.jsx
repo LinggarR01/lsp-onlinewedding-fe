@@ -82,6 +82,9 @@ function OrderTable({ data, loading, error, onEditClick, onDeleteClick }) {
                 Phone Number
               </th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider border-b">
+                Wedding Date
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider border-b">
                 Status
               </th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider border-b">
@@ -137,6 +140,22 @@ function OrderTable({ data, loading, error, onEditClick, onDeleteClick }) {
                 <td className="px-6 py-4">
                   <div className="text-sm text-gray-600 max-w-xs truncate">
                     {item.phone_number || 'No description'}
+                  </div>
+                </td>
+
+                {/* Wedding Date */}
+                <td className="px-6 py-4">
+                  <div className="text-sm text-gray-600 max-w-xs truncate">
+                    {item.wedding_date
+                      ? new Date(item.wedding_date).toLocaleDateString(
+                          'id-ID',
+                          {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          }
+                        )
+                      : 'No date'}
                   </div>
                 </td>
 
